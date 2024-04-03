@@ -18,6 +18,8 @@ For other systems, you will need to ensure that the following dependencies are i
 - Flask
 - SQLite
 
+![Ping Monitor Screenshot](screenshot.png)
+
 ### Installation
 
 The setup is intended to work out-of-the-box on my specific system configuration, and might require some adjustments to work on yours. The included `setup.sh` script facilitates the installation and setup process by setting up everything needed to run the Ping Monitor as a service.
