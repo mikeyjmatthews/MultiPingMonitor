@@ -1,33 +1,87 @@
-Welcome & Thank you. 
+# Ping Monitor
 
-This is my hastily thrown together Ping Monitor that I've edited slightly to ping multiple IP Addresses (as many as you wish) at the same time. 
+## Welcome & Thank You
 
-It "should" install automatically on any Debian based Linux system, I've tested it on 22.04 Ubuntu and 18.04 Ubuntu. Otherwise, you'll require lighttpd, Python, Flask and SQLite. 
+Welcome to the repository for my Ping Monitor project. This tool is designed to monitor the status of multiple IP addresses by pinging them simultaneously. It's a project that I've put together rather quickly and then adjusted to add more functionality.
 
-Now, at the moment, It's set up specifically to work on my system and getting it set up is a bit of a faff.  The install.sh script will uncompress the file and set everything up for it to run as a service ONLY. 
+### Compatibility
 
-To run the script, simply:
+The Ping Monitor should install automatically on any Debian-based Linux system. It has been tested on:
 
-$ chmod +x setup.sh
-$ ./setup.sh
+- Ubuntu 22.04
+- Ubuntu 18.04
 
-This should install all required packages and start the service on port 8010. You can test it from localhost:8010 or yourserverip:8010
+For other systems, you will need to ensure that the following dependencies are installed:
 
-To set up the ping file, you'll need to "systemctl stop multiping.service" and navigate to the folder "multiping" that the setup.sh created (should be in the same directory as your setup.sh script)
+- lighttpd
+- Python
+- Flask
+- SQLite
 
-Then, open "app.py" in your favourite editor, I personally use nano, Notepad++ or Visual Studio Code. 
+### Installation
 
-In the "class PingMonitor:" theres a line "def __init__(self, ip_addresses, interface="br0", interval=1):".  Edit "br0" in "interface="br0" to your network interface, such as enp1s0, wl0 etc. 
+The setup is intended to work out-of-the-box on my specific system configuration, and might require some adjustments to work on yours. The included `setup.sh` script facilitates the installation and setup process by setting up everything needed to run the Ping Monitor as a service.
 
-Next, navigate to the two lines that include the IP addresses 1.1.1.1,2.2.2.2 etc 
-        ip_addresses = [{'ip': ip, 'name': ip} for ip in ['1.1.1.1', '2.2.2.2', '3.3.3.3', '4.4.4.4', '5.5.5.5', '6.6.6.6', '7.7.7.7']])
-        for ip_address in ['1.1.1.1', '2.2.2.2', '3.3.3.3', '4.4.4.4', '5.5.5.5', '6.6.6.6', '7.7.7.7']:
-Simply edit the IP addresses to the addresses you want to ping.  You can do as many as you like. Make sure the format follows the same pattern 'ipaddr', 'ipaddr2', etc
+To install, follow these steps:
 
-Make sure both of the lines are identical, but pay attention to the formatting at the end.  The first line will finish with a double square bracket, the second will finish with a square bracket and a colon. 
+```bash
+chmod +x setup.sh
+./setup.sh
+```
 
-Lastly, navigate right to the bottom and change "app.run(host='0.0.0.0', port=8010)" where it says "port=8010" to any port you wish the service to be hosted from. 
+This will install all the necessary packages and start the service on port 8010. You can access the service via `http://localhost:8010` or `http://yourserverip:8010`.
 
-Now simply "systemctl start multiping.service" and navigate to either http://localhost:specifiedport or from another machine or http://yourserverip:specifiedport and enjoy. 
+### Configuration
 
-All of the containers will originally be named with the IP address that you've asked it to ping.  You can change the name of them by clicking the address and typing a new name.  This will automatically update the database and should retain in memory.
+#### Setting Up Ping Targets
+
+Before configuring the ping targets, stop the service:
+
+```bash
+systemctl stop multiping.service
+```
+
+Navigate to the `multiping` directory created by `setup.sh`. It should be in the same directory as your `setup.sh` script.
+
+1. **Edit Network Interface**: Open `app.py` in your preferred editor (e.g., nano, Notepad++, or Visual Studio Code). Find the `PingMonitor` class and locate the line:
+
+    ```python
+    def __init__(self, ip_addresses, interface="br0", interval=1):
+    ```
+
+    Replace `"br0"` in `interface="br0"` with your actual network interface (e.g., `enp1s0`, `wl0`, etc.).
+
+2. **Configure IP Addresses**: Locate the section where IP addresses are defined:
+
+    ```python
+    ip_addresses = [{'ip': ip, 'name': ip} for ip in ['1.1.1.1', '2.2.2.2', ...]]
+    for ip_address in ['1.1.1.1', '2.2.2.2', ...]:
+    ```
+
+    Replace the example IP addresses with the ones you wish to monitor. Ensure the format follows the pattern `'ipaddr1', 'ipaddr2', ...`.
+
+    Make sure both sections are updated and match in terms of the IP addresses listed.
+
+3. **Change Service Port**: If needed, change the port on which the service runs by editing the line at the bottom of `app.py`:
+
+    ```python
+    app.run(host='0.0.0.0', port=8010)
+    ```
+
+    Replace `8010` with your desired port number.
+
+Restart the service with:
+
+```bash
+systemctl start multiping.service
+```
+
+Access the Ping Monitor via `http://localhost:specifiedport` or `http://yourserverip:specifiedport`.
+
+#### Customizing Container Names
+
+Initially, each container will be named after the IP address it is monitoring. You can change this name by clicking on the address and entering a new name. This updates the database and retains the change in memory.
+
+### Enjoy
+
+Your Ping Monitor is now set up and ready to use. Enjoy monitoring your IP addresses with ease!
