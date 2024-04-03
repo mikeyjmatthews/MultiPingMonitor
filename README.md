@@ -6,6 +6,13 @@ It "should" install automatically on any Debian based Linux system, I've tested 
 
 Now, at the moment, It's set up specifically to work on my system and getting it set up is a bit of a faff.  The install.sh script will uncompress the file and set everything up for it to run as a service ONLY. 
 
+To run the script, simply:
+
+$ chmod +x setup.sh
+$ ./setup.sh
+
+This should install all required packages and start the service on port 8010. You can test it from localhost:8010 or yourserverip:8010
+
 To set up the ping file, you'll need to "systemctl stop multiping.service" and navigate to the folder "multiping" that the setup.sh created (should be in the same directory as your setup.sh script)
 
 Then, open "app.py" in your favourite editor, I personally use nano, Notepad++ or Visual Studio Code. 
